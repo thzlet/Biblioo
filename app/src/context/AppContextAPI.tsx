@@ -1,8 +1,5 @@
 /**
  * BIBLIOO - AppContext com API (MySQL)
- * 
- * Este arquivo substitui o AppContext original para conectar ao backend.
- * Renomeie para AppContext.tsx após configurar o backend.
  */
 
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
@@ -10,7 +7,7 @@ import type { Livro, Usuario, Emprestimo, FilaEspera, Tela, Categoria } from '@/
 import axios from 'axios';
 import { toast } from 'sonner';
 
-// Configuração da API
+// CONFIGURAÇÃO DA API
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 const api = axios.create({
