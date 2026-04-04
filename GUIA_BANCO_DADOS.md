@@ -6,6 +6,7 @@
 3. [Relacionamentos](#relacionamentos)
 
 ---
+## Arquitetura de Dados
 ### Diagrama das Entidades
 
 ```
