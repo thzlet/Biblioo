@@ -50,7 +50,7 @@
 
 ## Estrutura das Tabelas
 
-### 1. **usuarios** 
+### 1. **Usuarios** 
 Armazena todos os usuários do sistema.
 
 | Campo | Tipo | Descrição |
@@ -69,7 +69,7 @@ INSERT INTO usuarios (nome, email, senha_hash, matricula)
 VALUES ('João Silva', 'joao@universidade.br', '$2b$10$...', '2021001234');
 ```
 
-### 2. **categorias** 
+### 2. **Categorias** 
 Categorias dos livros.
 
 | Campo | Tipo | Descrição |
@@ -85,7 +85,7 @@ Categorias dos livros.
 - Direito
 - Comportamento
 
-### 3. **livros** 
+### 3. **Livros** 
 Catálogo de livros.
 
 | Campo | Tipo | Descrição |
@@ -103,7 +103,7 @@ Catálogo de livros.
 | `capa_url` | VARCHAR(500) | URL da imagem |
 | `total_exemplares` | INT | Total de cópias |
 
-### 4. **exemplares** 
+### 4. **Exemplares** 
 Cada cópia física de um livro.
 
 | Campo | Tipo | Descrição |
@@ -116,7 +116,7 @@ Cada cópia física de um livro.
 
 **Importante:** Um livro pode ter vários exemplares. O status de disponibilidade é controlado aqui.
 
-### 5. **emprestimos** 
+### 5. **Emprestimos** 
 Registra todos os empréstimos.
 
 | Campo | Tipo | Descrição |
@@ -131,7 +131,7 @@ Registra todos os empréstimos.
 | `status` | ENUM | ativo/devolvido/atrasado/renovado |
 | `renovacoes` | INT | Quantas vezes foi renovado |
 
-### 6. **fila_espera** 
+### 6. **Fila_espera** 
 Fila de espera para livros indisponíveis.
 
 | Campo | Tipo | Descrição |
