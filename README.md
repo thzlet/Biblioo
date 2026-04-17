@@ -30,6 +30,8 @@ A aplicação permite organizar informações de forma simples e eficiente, simu
 <img width="1682" height="846" alt="image" src="https://github.com/user-attachments/assets/e2049007-627a-4e31-a1db-541c1e1bf4a0" />
 <img width="1581" height="838" alt="image" src="https://github.com/user-attachments/assets/d99f41e1-311d-4998-97e3-761d99dff8b2" />
 <img width="1593" height="813" alt="image" src="https://github.com/user-attachments/assets/2f3a6868-548d-4f85-911c-800d34a0cbfd" />
+<img width="1874" height="859" alt="image" src="https://github.com/user-attachments/assets/8657a9d5-3bcb-4456-a36e-32c17006e5f4" />
+<img width="1769" height="848" alt="image" src="https://github.com/user-attachments/assets/a64b301e-68a1-414b-af82-6ead5b04a052" />
 <img width="1254" height="850" alt="image" src="https://github.com/user-attachments/assets/c60106fd-c22b-4bd5-8985-8688deb20662" />
 
 ---
