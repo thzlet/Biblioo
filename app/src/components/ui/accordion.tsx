@@ -1,5 +1,6 @@
+// wrapper customizado de accordion usando o Radix UI
 import * as React from "react"
-import * as AccordionPrimitive from "@radix-ui/react-accordion"
+import * as AccordionPrimitive from "@radix-ui/react-accordion" // cria um accordion reutilizável
 import { ChevronDownIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
