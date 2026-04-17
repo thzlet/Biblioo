@@ -1,40 +1,39 @@
 /**
- * BIBLIOO - BACKEND API (Node.js + Express + MySQL)
+ * backend api (node.js + express + mysql)
  * 
- * Para rodar:
  * 1. npm init -y
  * 2. npm install express mysql2 bcrypt jsonwebtoken cors dotenv
  * 3. node server.js
  */
 
-const express = require('express');
+const express = require('express'); // importa o express, que é o framework pra criar servidor HTTP
 const mysql = require('mysql2/promise');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt'); // usado pra criptografar senhas
+const jwt = require('jsonwebtoken'); // gera tokens
 const cors = require('cors');
-require('dotenv').config();
+require('dotenv').config(); // senha do banco, chave JWT
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 const JWT_SECRET = process.env.JWT_SECRET || 'sua_chave_secreta_muito_segura';
 
-// Middleware
+// middleware
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:3000'], // URLs do frontend
+  origin: ['http://localhost:5173', 'http://localhost:3000'], // urls do frontend
   credentials: true
 }));
 app.use(express.json());
 
-// Pool de conexões MySQL
-const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
+// pool de conexões mysql
+const pool = mysql.createPool({ // conjunto de conexões
+  host: process.env.DB_HOST || 'localhost', // endereço do banco
+  user: process.env.DB_USER || 'root', 
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'biblioo',
   port: process.env.DB_PORT || 3306,
   waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
+  connectionLimit: 10, // maximo de conexoes simultaneas
+  queueLimit: 0, // limite da fila de espera
   enableKeepAlive: true,
   keepAliveInitialDelay: 0
 });
@@ -42,6 +41,9 @@ const pool = mysql.createPool({
 // ============================================
 // MIDDLEWARE DE AUTENTICAÇÃO
 // ============================================
+/*
+aqui ele vai verificar se tem token, validar JWT, consultar o banco
+*/
 const autenticar = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
@@ -86,28 +88,28 @@ app.post('/api/login', async (req, res) => {
   try {
     const { email, senha } = req.body;
     
-    if (!email || !senha) {
+    if (!email || !senha) { // validacao basica
       return res.status(400).json({ erro: 'Email e senha são obrigatórios' });
     }
     
     const [rows] = await pool.execute(
-      'SELECT * FROM usuarios WHERE email = ? AND ativo = TRUE',
+      'SELECT * FROM usuarios WHERE email = ? AND ativo = TRUE', // filtra usuario inativo
       [email]
     );
     
-    if (rows.length === 0) {
+    if (rows.length === 0) { // vendo se existe
       return res.status(401).json({ erro: 'Email ou senha incorretos' });
     }
     
     const usuario = rows[0];
-    const senhaValida = await bcrypt.compare(senha, usuario.senha_hash);
+    const senhaValida = await bcrypt.compare(senha, usuario.senha_hash);  // senha vs hash do banco
     
     if (!senhaValida) {
       return res.status(401).json({ erro: 'Email ou senha incorretos' });
     }
     
     const token = jwt.sign(
-      { id: usuario.id, email: usuario.email, tipo: usuario.tipo },
+      { id: usuario.id, email: usuario.email, tipo: usuario.tipo }, // dados dentro do token 
       JWT_SECRET,
       { expiresIn: '24h' }
     );
@@ -133,7 +135,7 @@ app.post('/api/register', async (req, res) => {
   try {
     const { nome, email, senha, matricula } = req.body;
     
-    if (!nome || !email || !senha) {
+    if (!nome || !email || !senha) { // verificacao 
       return res.status(400).json({ erro: 'Nome, email e senha são obrigatórios' });
     }
     
@@ -640,9 +642,9 @@ app.post('/api/admin/livros', autenticar, apenasAdmin, async (req, res) => {
 // ============================================
 // HEALTH CHECK
 // ============================================
-app.get('/api/health', async (req, res) => {
+app.get('/api/health', async (req, res) => { // verifica se a api ta rodando 
   try {
-    await pool.execute('SELECT 1');
+    await pool.execute('SELECT 1'); // ping no banco 
     res.json({ status: 'OK', database: 'Conectado' });
   } catch (error) {
     res.status(500).json({ status: 'ERRO', database: 'Desconectado' });
