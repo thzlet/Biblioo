@@ -557,17 +557,17 @@ app.post('/api/fila-espera', autenticar, async (req, res) => {
 });
 
 // DELETE /api/fila-espera/:id
-app.delete('/api/fila-espera/:id', autenticar, async (req, res) => {
+app.delete('/api/fila-espera/:id', autenticar, async (req, res) => { // cancela um item da fila de espera
   try {
     const { id } = req.params;
     const usuarioId = req.usuario.id;
     
-    const [result] = await pool.execute(
+    const [result] = await pool.execute( // executa a query no banco para cancelar o item
       "UPDATE fila_espera SET status = 'cancelado' WHERE id = ? AND usuario_id = ?",
       [id, usuarioId]
     );
     
-    if (result.affectedRows === 0) {
+    if (result.affectedRows === 0) { // se nenhuma linha foi afetada, o item não existe ou não pertence ao usuário
       return res.status(404).json({ erro: 'Item da fila não encontrado' });
     }
     
@@ -622,12 +622,12 @@ app.post('/api/admin/livros', autenticar, apenasAdmin, async (req, res) => {
     );
     
     // criar exemplares
-    const livroId = result.insertId;
-    const numExemplares = total_exemplares || 1;
+    const livroId = result.insertId; // pega o ID do livro que acabou de ser inserido no banco
+    const numExemplares = total_exemplares || 1; // define quantos exemplares serão criados ou exibe 1 por padrão (se total_exemplares nao existir)
     
     for (let i = 1; i <= numExemplares; i++) {
       await pool.execute(
-        'INSERT INTO exemplares (livro_id, codigo_barras, status) VALUES (?, ?, ?)',
+        'INSERT INTO exemplares (livro_id, codigo_barras, status) VALUES (?, ?, ?)', // insere um novo exemplar na tabela
         [livroId, `LIV${String(livroId).padStart(3, '0')}-${String(i).padStart(3, '0')}`, 'disponivel']
       );
     }
@@ -655,11 +655,11 @@ app.get('/api/health', async (req, res) => { // verifica se a api ta rodando
 // INICIAR SERVIDOR
 // ============================================
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor Biblioo rodando na porta ${PORT}`);
-  console.log(`📚 API disponível em: http://localhost:${PORT}/api`);
+  console.log(`🚀 Servidor Biblioo rodando na porta ${PORT}`); // exibe no console que o servidor está rodando
+  console.log(`📚 API disponível em: http://localhost:${PORT}/api`); // mostra a URL base da API para acesso
 });
 
 // tratamento de erros não capturados
-process.on('unhandledRejection', (err) => {
-  console.error('Erro não tratado:', err);
+process.on('unhandledRejection', (err) => { // captura erros de Promises que não foram tratados
+  console.error('Erro não tratado:', err); // exibe o erro no console para debug
 });
