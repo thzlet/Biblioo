@@ -46,14 +46,14 @@ aqui ele vai verificar se tem token, validar JWT, consultar o banco
 */
 const autenticar = async (req, res, next) => {
   try {
-    const authHeader = req.headers.authorization;
+    const authHeader = req.headers.authorization; // pega o header Authorization da requisição
     
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (!authHeader || !authHeader.startsWith('Bearer ')) { // verifica se o token foi enviado e se está no formato "Bearer TOKEN"
       return res.status(401).json({ erro: 'Token não fornecido' });
     }
     
     const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);  // verifica e decodifica o token usando a chave secreta
     
     // verificar se usuário ainda existe e está ativo
     const [rows] = await pool.execute(
@@ -70,10 +70,10 @@ const autenticar = async (req, res, next) => {
   } catch (err) {
     if (err.name === 'JsonWebTokenError') {
       return res.status(401).json({ erro: 'Token inválido' });
-    }
+    } // token expirado 
     if (err.name === 'TokenExpiredError') {
       return res.status(401).json({ erro: 'Token expirado' });
-    }
+    } // erro generico
     console.error('Erro na autenticação:', err);
     res.status(500).json({ erro: 'Erro interno' });
   }
