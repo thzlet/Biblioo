@@ -131,11 +131,11 @@ app.post('/api/login', async (req, res) => {
 });
 
 // POST /api/register
-app.post('/api/register', async (req, res) => {
+app.post('/api/register', async (req, res) => { // rota post para registrar novo usuario  
   try {
-    const { nome, email, senha, matricula } = req.body;
+    const { nome, email, senha, matricula } = req.body; // extrai os campos do corpo da requisição
     
-    if (!nome || !email || !senha) { // verificacao 
+    if (!nome || !email || !senha) { // validação 
       return res.status(400).json({ erro: 'Nome, email e senha são obrigatórios' });
     }
     
@@ -149,7 +149,7 @@ app.post('/api/register', async (req, res) => {
       return res.status(400).json({ erro: 'Email já cadastrado' });
     }
     
-    // hash da senha
+    // gera o hash da senha com bcrypt
     const senhaHash = await bcrypt.hash(senha, 10);
     
     const [result] = await pool.execute(
